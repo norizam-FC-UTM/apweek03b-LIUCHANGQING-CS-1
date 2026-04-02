@@ -9,19 +9,32 @@ class BankAccount {
     // Constructor
     public BankAccount(String name, double initialDeposit) {
         this.name = name;
-        this.balance = initialDeposit;
+        if (initialDeposit >= 0) {
+            this.balance = initialDeposit;
+        } else {
+            this.balance = 0.0;
+            System.out.println("Invalid initial deposit. Balance set to RM 0.0");
+        }
         this.dividendRate = 0.0;
     }
 
     // Deposit money
     public void deposit(double amount) {
-        balance = balance + amount;
+        if (amount > 0) {
+            balance = balance + amount;
+        } else {
+            System.out.println("Invalid deposit amount.");
+        }
         // too simple - need refinement
     }
 
     // Withdraw money
     public void withdraw(double amount) {
-        balance = balance - amount;
+        if (amount > 0 && amount <= balance) {
+            balance = balance - amount;
+        } else {
+            System.out.println("Invalid withdrawal amount or insufficient balance.");
+        }
         // too simple - need refinement
     }
 
@@ -38,7 +51,11 @@ class BankAccount {
 
     // Set dividend rate
     public void setDividendRate(double rate) {
-        dividendRate = rate;
+        if (rate >= 0) {
+            dividendRate = rate;
+        } else {
+            System.out.println("Invalid dividend rate.");
+        }
         // too simple - need refinement
     }
 
@@ -57,6 +74,9 @@ public class App {
 
         Scanner sc = new Scanner(System.in);
 
+        BankAccount[] accounts = new BankAccount[10];
+        int accountCount = 0;
+
         System.out.println("===== BANK ACCOUNT SYSTEM =====");
 
         // Input
@@ -67,33 +87,34 @@ public class App {
         double initialDeposit = sc.nextDouble();
 
         // Create account
-        BankAccount acc1 = new BankAccount(name, initialDeposit);
+        accounts[accountCount] = new BankAccount(name, initialDeposit);
+        accountCount++;
 
         System.out.println("\nAccount created successfully.");
-        acc1.printObjectState();
+        accounts[0].printObjectState();
 
         // Deposit
         System.out.println("----- DEPOSIT -----");
         System.out.print("Enter deposit amount: RM ");
         double depositAmount = sc.nextDouble();
-        acc1.deposit(depositAmount);
-        acc1.printObjectState();
+        accounts[0].deposit(depositAmount);
+        accounts[0].printObjectState();
 
         // Withdraw
         System.out.println("----- WITHDRAW -----");
         System.out.print("Enter withdrawal amount: RM ");
         double withdrawAmount = sc.nextDouble();
-        acc1.withdraw(withdrawAmount);
-        acc1.printObjectState();
+        accounts[0].withdraw(withdrawAmount);
+        accounts[0].printObjectState();
 
         // Dividend
         System.out.println("----- YEAR-END DIVIDEND -----");
         System.out.print("Enter dividend rate (example 0.05 for 5%): ");
         double rate = sc.nextDouble();
-        acc1.setDividendRate(rate);
-        acc1.applyDividend();
+        accounts[0].setDividendRate(rate);
+        accounts[0].applyDividend();
 
-        acc1.printObjectState();
+        accounts[0].printObjectState();
 
         System.out.println("===== END OF PROGRAM =====");
 
